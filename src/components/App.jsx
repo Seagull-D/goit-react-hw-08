@@ -1,43 +1,24 @@
-import { useEffect } from "react";
-import { toggleFormVisibility } from "../redux/visibleSlice";
+import { Route, Routes } from "react-router-dom";
+import ContactsPage from "../pages/ContactsPage/ContactsPage";
 import "./App.css";
-import ContactForm from "./ContactForm/ContactForm";
-import ContactList from "./ContactList/ContactList";
-import SearchBox from "./SearchBox/SearchBox";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchContacts } from "../redux/contactsOps";
-import { selectError, selectLoading } from "../redux/contactsSlice";
-import Loader from "./Loader/Loader";
-import ErrorMessage from "./ErrorMessage/ErrorMessage";
+
+import Layout from "./Layout";
+import HomePage from "../pages/HomePage/HomePage";
+import RegistrationPage from "../pages/RegistrationPage/RegistrationPage";
+import LoginPage from "../pages/LoginPage/LoginPage";
 
 const App = () => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
-
-  const isFormVisible = useSelector((state) => state.visible.isFormVisible);
-  const loader = useSelector(selectLoading);
-  const error = useSelector(selectError);
-  const toggleForm = () => {
-    dispatch(toggleFormVisibility(), [dispatch]);
-  };
-
   return (
-    <div className="appStyle">
-      <h1>Телефонна книга</h1>
-      {error && <ErrorMessage />}
-      <SearchBox />
-      {isFormVisible ? (
-        <ContactForm closeForm={toggleForm} />
-      ) : (
-        <button className="toggleFormBtn" onClick={toggleForm}>
-          Додати контакт
-        </button>
-      )}
-      {loader && <Loader />}
-      <ContactList closeForm={toggleForm} />
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<HomePage />}></Route>
+          <Route path="contacts" element={<ContactsPage />}></Route>
+        </Route>
+        <Route path="/registration" element={<RegistrationPage />}></Route>
+        <Route path="/login" element={<LoginPage />}></Route>
+      </Routes>
+    </>
   );
 };
 
