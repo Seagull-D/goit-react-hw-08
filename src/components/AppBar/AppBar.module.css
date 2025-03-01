@@ -30,24 +30,10 @@
   filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#F9F6FA", endColorstr="#5471C1", GradientType=1 );
 }
 
-.headerNavLis {
+.navList {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
   gap: 20px;
 }
-
 .headerName {
   color: azure;
-}
-
-.headerNavItem {
-  font-size: 20px;
-}
-
-.link {
-  color: azure;
-}
-.active {
-  color: rgb(255, 105, 105);
 }

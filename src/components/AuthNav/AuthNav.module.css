@@ -1,0 +1,21 @@
+.headerNavLis {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+}
+
+.headerName {
+  color: azure;
+}
+
+.headerNavItem {
+  font-size: 20px;
+}
+
+.link {
+  color: azure;
+}
+.active {
+  color: rgb(255, 105, 105);
+}
