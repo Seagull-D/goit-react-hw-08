@@ -11,7 +11,7 @@ const AuthNav = () => {
     <ul className={s.headerNavLis}>
       <li>
         <NavLink className={buildLinkClass} to="/registration">
-          Registration
+          Sing up
         </NavLink>
       </li>
       <li>

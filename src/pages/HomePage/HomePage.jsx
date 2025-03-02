@@ -1,7 +1,8 @@
+import s from "./HomePage.module.css";
 const HomePage = () => {
   return (
     <div>
-      <p>Вітаю в телефонній книзі</p>
+      <p className={s.homeHeader}>Вітаю в телефонній книзі</p>
     </div>
   );
 };

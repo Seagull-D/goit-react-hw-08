@@ -6,11 +6,12 @@ import axios from "axios";
 export const api = axios.create({
   baseURL: "https://connections-api.goit.global",
 });
-const setAuthHeader = (token) => {
+export const setAuthHeader = (token) => {
   if (token) {
     api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    console.log("Токен встановлено:", token); // Додаємо лог для перевірки
   } else {
-    console.error("Токен відсутній");
+    console.error("Токен відсутній або null");
   }
 };
 const clearAuthHeader = () => {
@@ -46,3 +47,20 @@ export const logout = createAsyncThunk("auth/logout", async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(error.message);
   }
 });
+export const refreshUser = createAsyncThunk(
+  "auth/refresh",
+  async (_, thunkAPI) => {
+    try {
+      const savedToken = thunkAPI.getState().auth.token;
+      console.log(savedToken);
+      if (savedToken === null) {
+        return thunkAPI.rejectWithValue("відсутній токін");
+      }
+      setAuthHeader(savedToken);
+      const { data } = await api.get("/users/current");
+      return { user: data, token: savedToken };
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
