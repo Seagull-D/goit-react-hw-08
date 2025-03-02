@@ -1,22 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { api, setAuthHeader } from "../auth/authOperations";
-
-// Відкриваємо функцію, яка обробляє редірект
-const redirectToLogin = (navigate) => {
-  navigate("/"); // Перенаправляємо на сторінку входу
-};
-
+import { useNavigate } from "react-router-dom";
 export const fetchContacts = createAsyncThunk(
   "contacts/fetchAll",
   async (_, thunkApi) => {
     const token = thunkApi.getState().auth.token;
-    const navigate = thunkApi.extra;
-
     if (token) {
       setAuthHeader(token);
     } else {
       console.error("Токен відсутній");
-      redirectToLogin(navigate); // Перенаправляємо на сторінку входу
       return thunkApi.rejectWithValue("Unauthorized - Token is missing");
     }
 
@@ -35,13 +27,10 @@ export const deleteContact = createAsyncThunk(
   "contacts/deleteContact",
   async (contactId, thunkApi) => {
     const token = thunkApi.getState().auth.token;
-    const navigate = thunkApi.extra;
-
     if (token) {
       setAuthHeader(token);
     } else {
       console.error("Токен відсутній");
-      redirectToLogin(navigate);
       return thunkApi.rejectWithValue("Unauthorized - Token is missing");
     }
 
@@ -60,13 +49,10 @@ export const addContact = createAsyncThunk(
   "contacts/addContact",
   async (body, thunkApi) => {
     const token = thunkApi.getState().auth.token;
-    const navigate = thunkApi.extra;
-
     if (token) {
       setAuthHeader(token);
     } else {
       console.error("Токен відсутній");
-      redirectToLogin(navigate);
       return thunkApi.rejectWithValue("Unauthorized - Token is missing");
     }
 

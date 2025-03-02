@@ -10,29 +10,50 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { refreshUser } from "../redux/auth/authOperations";
 import Loader from "./Loader/Loader";
+import { selectIsRefreshed } from "../redux/auth/authSelectors";
+import PrivateRoute from "../pages/PrivateRoute/PrivateRoute";
+import RestrictedRoute from "../pages/RestrictedRoute/RestrictedRoute";
 
 const App = () => {
   const dispatch = useDispatch();
-  const isRefreshing = useSelector((state) => state.auth.isRefreshing);
+  const isRefreshing = useSelector(selectIsRefreshed);
 
   useEffect(() => {
     dispatch(refreshUser());
   }, [dispatch]);
 
-  if (isRefreshing) {
-    return <Loader />;
-  }
-
-  return (
+  return isRefreshing ? (
+    <Loader />
+  ) : (
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path="contacts" element={<ContactsPage />} />
+          <Route
+            path="contacts"
+            element={
+              <PrivateRoute>
+                <ContactsPage />
+              </PrivateRoute>
+            }
+          />
         </Route>
-        <Route path="/registration" element={<RegistrationPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/registration"
+          element={
+            <RestrictedRoute
+              component={<RegistrationPage />}
+              redirectTo="/contacts"
+            />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute component={<LoginPage />} redirectTo="/contacts" />
+          }
+        />
       </Routes>
     </>
   );
